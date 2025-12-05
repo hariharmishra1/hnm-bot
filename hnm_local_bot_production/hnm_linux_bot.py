@@ -3,7 +3,7 @@
 HNM Bot - Interactive assistant for Linux system administration tasks
 
 Built by: Harihar Mishra
-Email: harihar.mishra@hcltech.com
+
 """
 
 import subprocess
@@ -77,7 +77,15 @@ class Hnm_Linux_Bot:
     def run_command(self, cmd):
         """Execute shell command and return output"""
         try:
-            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
+            # Python 3.6 compatible version (capture_output not available)
+            result = subprocess.run(
+                cmd, 
+                shell=True, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE, 
+                universal_newlines=True,  # text=True equivalent for Python 3.6
+                timeout=30
+            )
             return result.stdout if result.stdout else result.stderr
         except subprocess.TimeoutExpired:
             return "Command timed out after 30 seconds"
@@ -487,7 +495,7 @@ class Hnm_Linux_Bot:
         print("╔════════════════════════════════════════════════════════════╗")
         print("║           🐧 HNM Bot - Your CLI Assistant 🐧              ║")
         print("╚════════════════════════════════════════════════════════════╝")
-        print("Built by: Harihar Mishra | harihar.mishra@hcltech.com")
+        print("Built by: Harihar Mishra ")
         print(f"Detected OS: {self.os_version if self.os_version != 'unknown' else self.os_type}")
         print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("Compatible: RHEL 6+, Ubuntu 16.04+, SUSE 11+")
@@ -520,3 +528,4 @@ class Hnm_Linux_Bot:
 if __name__ == "__main__":
     bot = Hnm_Linux_Bot()
     bot.start()
+
